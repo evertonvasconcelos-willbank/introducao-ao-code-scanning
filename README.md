@@ -16,111 +16,37 @@ _Assegurar a segurança do código fonte das aplicações é um passo essencial 
 </header>
 
 <!--
-  <<< Author notes: Step 2 >>>
+  <<< Author notes: Step 4 >>>
   Start this step by acknowledging the previous step.
   Define terms and link to docs.github.com.
-  TBD-step-2-notes.
+  TBD-step-4-notes.
 -->
-## Passo 2: Revisar e Triar Alertas do CodeQL
 
-_Parabéns! Você colocou o CodeQL para funcionar! :tada:_
+## Passo 4: Prevenir Vulnerabilidades no Pull Request
 
-Neste exercício, vamos revisar os resultados da scan do CodeQL e triagem de um alerta.
+_Bom trabalho! Você concluiu o Passo 3: Corrigir Vulnerabilidades de Segurança!_
 
-**O que é o GitHub Actions**:  
-O GitHub Actions é a plataforma de automação e CI/CD integrada ao GitHub. Utilizamos o GitHub Actions para orquestrar e executar scans de segurança com o code scanning. É uma plataforma de integração e entrega contínua (CI/CD) que permite automatizar seu pipeline de build, teste e deploy. Para mais informações, veja "[Understanding GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)".
+Muito bem! Você chegou até aqui. Estamos quase terminando! O último passo é testar a integração do pull request com o CodeQL. Nesta etapa, vamos reintroduzir uma vulnerabilidade no arquivo `routes.py` para disparar um alerta de vulnerabilidade de injeção de SQL. Trata-se do mesmo problema que vimos inicialmente.
 
-**O que é CWE**:  
-Common Weakness Enumeration (CWE) é um sistema de categorização para fraquezas e vulnerabilidades em hardware e software. Pense nele como uma forma de descrever e classificar problemas de segurança no código fonte de uma aplicação. Para mais detalhes, consulte o artigo da Wikipedia "[Common Weakness Enumeration](https://en.wikipedia.org/wiki/Common_Weakness_Enumeration)".
+Nosso objetivo é compreender a experiência dos desenvolvedores ao encontrar uma nova vulnerabilidade.
 
-### :keyboard: Atividade 1: Visualizar o status de uma scan CodeQL
+Neste passo, nós iremos:
+- Editar o arquivo `routes.py`.
+- Alterar a instrução SQL para torná-la insegura.
+- Confirmar essas alterações e mesclar o código inseguro na branch principal.
+- Experimentar o alerta dentro de um pull request.
 
-Nesta atividade, vamos explorar o GitHub Actions para visualizar o status de uma scan do CodeQL.  
-1. No seu novo repositório, acesse a página selecionando **Actions** na barra de navegação superior. Se a execução da action CodeQL ainda estiver em andamento, você verá um spinner amarelo indicando que o scan está em progresso. Geralmente, isso leva cerca de 4 minutos.
-2. Selecione a execução clicando em **CodeQL Setup**.
+Vamos começar 👍
 
-![codeql-setup](/images/codeql-setup.png)
+**O que é pull request**:  
+Pull requests são propostas de alterações em um repositório submetidas por um usuário e aceitas ou rejeitadas pelos colaboradores do repositório. Isso permite que várias pessoas trabalhem no mesmo código ao mesmo tempo. Para mais informações, confira o curso GitHub Skills "[Introduction to GitHub](https://github.com/skills/introduction-to-github)" ou a seção "[About pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)" na documentação do GitHub.
 
-Note que mais informações estão disponíveis dentro da execução das Actions. Sinta-se à vontade para explorar essa seção e visualizar informações como os logs do CodeQL, duração, status e artefatos gerados.
+**O que é branch**:  
+Uma branch é uma versão paralela do seu repositório. Por padrão, seu repositório possui uma branch chamada `main`, que é considerada a branch principal. Criar branches adicionais permite que você copie a branch principal do seu repositório e realize alterações de forma segura, sem comprometer o projeto principal. Para mais informações, veja "[About branches](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches#)" na documentação do GitHub.
 
-Após a conclusão da scan, um ícone de check verde aparecerá ao lado da execução.
+### :keyboard: Atividade 1: Editar `routes.py` e criar um novo pull request
 
-### :keyboard: Atividade 2: Visualizar todos os Alertas do CodeQL
-
-Nesta atividade, vamos visualizar os resultados do CodeQL na página **Security**(Segurança) do seu repositório. Essa página exibe todas as informações relacionadas à segurança.
-
-1. Navegue até a aba **Security** na barra de navegação superior do seu repositório.
-2. Selecione **Code scanning** sob o título *"Vulnerability alerts"* na barra lateral esquerda.
-
-Nesta tela, estarão listadas todas as vulnerabilidades identificadas pelo CodeQL no código deste repositório. Explore os diferentes filtros e recursos de busca desta página. Essas capacidades de filtragem são muito úteis quando você está trabalhando com muitas descobertas!
-
-### :keyboard: Atividade 3: Revisar um Alerta
-
-Nesta atividade, vamos explorar a interface do alerta. Vamos revisar o fluxo de dados da vulnerabilidade, identificar qual parte do código o alerta impacta e obter mais informações sobre o alerta.
-
-**Status do alerta:**
-Esta seção exibe o status atual do alerta (aberto ou fechado), identifica a branch onde o scan detectou o alerta e mostra o timestamp do alerta.
-  
-![alert-status](/images/alert-status.png)
-
-**Informações de localização:**
-Esta seção descreve qual parte do código está vulnerável.
-  
-![location-information](/images/location-information.png)
-
-**Caminhos:**  
-Ao clicar em "Show paths" (Exibir caminhos), você obterá insights adicionais sobre o fluxo de dados relacionado ao alerta. A janela modal mostra onde a entrada do usuário (chamada de "source") flui pela aplicação até ser processada (chamada de "sink"). Isso ilustra o fluxo de dados em sua aplicação.
-
-**Recomendações:**  
-Esta seção fornece uma visão geral rápida da ferramenta (neste caso, o CodeQL), o ID da regra e permite visualizar a consulta CodeQL utilizada para encontrar essa vulnerabilidade. Você pode visualizar a consulta clicando em **View source**. Além disso, este painel inclui recomendações para corrigir a vulnerabilidade. Clique em **Show more** (Mostrar mais) para ver a recomendação completa.
-
-![recommendations](/images/recommendations.png)
-
-**Rastro de auditoria:**  
-O rastro de auditoria mostra o histórico do alerta. Ele exibirá o status conforme os usuários marcam um alerta como fechado ou corrigem o alerta no código.
-
-![audit-trail](/images/audit-trail.png)
-
-**Triagem do alerta:**  
-Utilize os botões no canto superior direito do alerta para triá-lo como *resolvido, falso positivo ou aceito*. Por enquanto, não faça nada. Em breve, explicaremos esses botões. 😄
-
-**Informações adicionais:**  
-Por fim, o painel à direita contém informações como tags, detalhes sobre CWE e a severidade do alerta.
-  
-![additional-information.png](/images/additional-information.png)
-
-### :keyboard: Atividade 4: Descartar um Alerta
-
-Agora que você já está familiarizado com o layout do alerta, vamos praticar o processo de encerramento de um alerta.
-
-1. Dentro do mesmo alerta, clique em **Dismiss alert** (Descartar alerta), escolha um motivo para o descarte e adicione uma breve anotação.*Esta anotação é muito importante para seus companheiros ou até mesmo para o time de segurança da sua empresa manterem uma boa comunicação.*
-2. Clique em **Dismiss alert**.
-3. Neste momento, o alerta mudará seu estado para "Dismissed" (Descartado). Você poderá ver essa alteração no rastro de auditoria na parte inferior do alerta.
-4. Volte para **Security** > **Code scanning alerts**. Você verá que agora há apenas 1 alerta listado.
-5. Clique em **1 Closed**. Isso o levará à lista de alertas fechados, onde você pode visualizar o alerta que acabou de fechar.
-
-   ![one-closed-alert.png](/images/one-closed-alert.png)
-
-6. (Opcional) Você também pode reabrir o alerta selecionando **Reopen alert** (Reabrir alerta).
-
-## Passo 3: Corrigir Vulnerabilidades de Segurança
-
-Neste passo, vamos trabalhar para corrigir as vulnerabilidades de segurança existentes identificadas pelo CodeQL. Lembre-se, neste ponto, já introduzimos o CodeQL em nosso repositório e o fizemos scannear o código atual. As vulnerabilidades encontradas são problemas do mundo real e precisam ser corrigidas! Vamos resolver essa questão editando o arquivo `/server/routes.py`.
-
-### :keyboard: Atividade 1: Revisar alertas
-
-Primeiro, antes de corrigir esses alertas, precisamos garantir que eles ainda estejam abertos. Também precisaremos coletar informações sobre quais arquivos corrigir e a melhor forma de fazê-lo.
-
-1. Navegue até a página de alertas do code scanning: **Security** > **Code scanning**.
-2. Você deverá ver dois alertas listados como "**Open**". Se algum dos alertas estiver listado como "**Closed**", abra a página do alerta e escolha **Reopen alert**.
-
-Agora que ambos os alertas estão abertos, vamos corrigi-los. Se você observar os alertas, ambos apontam para um arquivo específico contendo os problemas: `server/routes.py`. O problema está na construção da consulta SQL para o banco de dados. Essas consultas estão vulneráveis a ataques de injeção de SQL. Devemos reescrever essas instruções SQL de forma mais segura.
-
-Se você expandir a seção **More info** (Mais informações) no final do alerta, encontrará sugestões bem claras para corrigir essa consulta. Vamos implementar essas sugestões na próxima atividade.
-
-### :keyboard: Atividade 2: Editar routes.py
-
-Agora que sabemos onde estão os problemas e como corrigi-los, vamos começar modificando o arquivo `routes.py`. Novamente, recomenda-se realizar esses passos em uma nova janela ou aba do navegador.
+Nesta primeira atividade, vamos introduzir a mesma instrução SQL insegura que vimos anteriormente no arquivo `routes.py`. Assim que atualizarmos o arquivo, faremos o commit das alterações em uma nova branch e criaremos um pull request.
 
 1. Clique na aba **Code** do seu repositório.
 2. Selecione a pasta `server`.
@@ -129,14 +55,35 @@ Agora que sabemos onde estão os problemas e como corrigi-los, vamos começar mo
 
    ![edit-button.png](/images/edit-button.png)
 
-5. Edite a linha 13, destacando a instrução SQL, e substitua por este texto:  
-   `"SELECT * FROM books WHERE name LIKE ?", (f"%{name}%",)`.
-6. Edite a linha 19 para substituir a instrução SQL pelo seguinte texto:  
-   `"SELECT * FROM books WHERE author LIKE ?", (f"%{author}%",)`.
-7. Clique em **Commit changes...** (Confirmar alterações) no canto superior direito. A janela "Propose changes" (Propor alterações) aparecerá. Deixe as configurações padrão e clique novamente em **Commit changes**.
-8. O CodeQL iniciará uma nova varredura. Verifique o status dessa varredura navegando até **Actions** e escolhendo a ação **CodeQL**. Assim que o trabalho da varredura for concluído, o Actions exibirá um ícone de check verde ao lado da última execução.
-9. Quando a varredura do CodeQL terminar, navegue até **Security** > **Code scanning** para revisar os alertas. Você deverá ver zero alertas abertos e dois alertas fechados 🎉. Sinta-se à vontade para revisar os alertas fechados, especialmente o rastro de auditoria.
-10. Aguarde cerca de 20 segundos e, em seguida, atualize esta página (aquela em que você está seguindo as instruções). O [GitHub Actions](https://docs.github.com/en/actions) atualizará automaticamente para o próximo passo.
+5. Edite a linha 16, destacando a instrução SQL, e substitua por este texto:  
+   `"SELECT * FROM books WHERE name LIKE '%" + name + "%'"`.
+6. Clique em **Commit changes...** no canto superior direito. A janela "Propose changes" (Propor alterações) aparecerá.
+7. Desta vez, selecione o botão de opção ao lado de **Create a new branch**. Você pode criar um novo nome para essa branch ou deixar a sugestão padrão.
+8. Clique em **Propose changes**. Isso abrirá um novo pull request.
+9. Na janela "Open a pull request" (Abrir um pull request), clique em **Create pull request**.
+
+### :keyboard: Atividade 2: Revisar o pull request
+
+Neste ponto, editamos o arquivo `routes.py` para adicionar nosso código vulnerável, fizemos o commit das alterações em nossa nova branch e criamos um pull request para mesclar a nova branch na branch `main`. Esses são os mesmos passos que um desenvolvedor tomaria para introduzir novos códigos em um repositório.
+
+Agora, vamos dar uma olhada no pull request para ver como é a experiência:
+
+1. Na atividade anterior, criamos o pull request. Após a criação, você foi levado diretamente para a página do pull request. No final da página, você verá uma verificação chamada "Code scanning/CodeQL". Essa é a ação do CodeQL analisando o código introduzido no pull request.
+
+   ![pr-panel](/images/pr-panel.png)
+
+2. Assim que a verificação for concluída, você verá um novo comentário no pull request do CodeQL indicando uma nova vulnerabilidade de segurança: uma consulta SQL construída a partir de dados controlados pelo usuário. Essa é nossa vulnerabilidade de injeção de SQL.
+
+   <img width="1180" alt="image" src="https://github.com/leftrightleft/enable-code-scanning/assets/4910518/378bd766-ef61-4619-ab3c-bf2c8d9618d7">
+
+3. Revise os caminhos do fluxo de dados clicando em **Show paths** (Exibir caminhos).
+4. Se desejar, adicione um comentário e marque um de seus amigos usando o handle do GitHub (por exemplo, `@username`). Isso notificará a pessoa de que você comentou no problema e precisa da ajuda dela para resolver o problema. 😄
+
+Se isto fosse uma situação real, o desenvolvedor corrigiria a instrução SQL em sua branch. Uma vez corrigida, a vulnerabilidade seria automaticamente encerrada.
+
+Se você quiser saber mais sobre integrações de pull request para code scanning, consulte "[Triaging code scanning alerts in pull requests](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/triaging-code-scanning-alerts-in-pull-requests)".
+
+5. Aguarde cerca de 20 segundos e, em seguida, atualize esta página (aquela em que você está seguindo as instruções). O [GitHub Actions](https://docs.github.com/en/actions) atualizará automaticamente para o próximo passo.
 
 <footer>
 
